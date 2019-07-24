@@ -1,6 +1,7 @@
 package com.cloud.common.exception;
 
 import com.cloud.common.bean.ResponseInfo;
+import com.cloud.common.util.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -88,6 +89,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(LogicException.class)
     public ResponseInfo handleLogicException(LogicException exception) {
         return new ResponseInfo(HttpStatus.NOT_ACCEPTABLE.value(), null, exception.getMessage());
+    }
+
+    /**
+     * 业务异常
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(BusinessException.class)
+    public ResponseInfo handleBusinessException(BusinessException exception) {
+        return ResultUtils.error(exception.getCode(), exception.getMessage());
     }
 
 }
